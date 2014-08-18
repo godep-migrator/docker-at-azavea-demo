@@ -1,0 +1,8 @@
+---
+- hosts: all
+  vars:
+    env:
+      GOPATH: "{{ go_path }}"
+  roles:
+   - common
+   - go

@@ -1,0 +1,24 @@
+---
+- name: Create service account for Hello
+  user: name={{ hello_user }}
+        system=yes
+        home={{ hello_dir }}
+        shell=/bin/false
+        state=present
+
+- name: Ensure base directory structure
+  file: path={{ hello_dir }}/{{ item }} owner={{ hello_user }} group={{ hello_user }} state=directory
+  with_items:
+    - bin
+    - log
+
+- name: Download Hello
+  get_url: url={{ hello_repository }}/releases/download/{{ hello_version }}/hello-{{ hello_version}}-{{ hello_os }}-{{ hello_arch }}.tar.gz
+           dest=/opt/hello-{{ hello_version}}-{{ hello_os }}-{{ hello_arch }}.tar.gz
+
+- name: Extract and install Hello
+  command: tar -C {{ hello_dir }}/bin -xzf /opt/hello-{{ hello_version}}-{{ hello_os }}-{{ hello_arch }}.tar.gz
+           creates={{ hello_dir }}/bin/hello
+
+- name: Create Hello service definition
+  template: src=hello.conf.j2 dest=/etc/init/hello.conf

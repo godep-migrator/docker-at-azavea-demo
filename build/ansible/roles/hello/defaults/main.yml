@@ -1,0 +1,8 @@
+---
+hello_dir: /opt/hello
+hello_log: "{{ hello_dir }}/log/hello.log"
+hello_user: hello
+hello_version: e289fe6
+hello_os: linux
+hello_arch: amd64
+hello_repository: https://github.com/hectcastro/docker-at-azavea-demo
